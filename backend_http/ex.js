@@ -60,16 +60,14 @@ app.put('/api/courses/:id', (req,res)=>{
     res.send(course);
 });
 
-app.delete('/api/courses', (req,res)=>{
+app.delete('/api/courses/:id', (req,res)=>{
     //code the following logic
     //look up the course by id
-    for(var i=0;i<courses.length;i++){
-        if(courses[i].id === parseInt(req.params.id)){
-            res.send(courses[i]);
-            courses.splice(i, 1);
-            return;
-        }
-        res.send(courses[i].id);
+    const courseExists = courses.find(c => c.id === parseInt(req.params.id));
+    if(courseExists.id === parseInt(req.params.id)){
+        res.send(courseExists);
+        courses.splice(courses.indexOf(courseExists),1);
+        return;
     }
     res.status(404).send("The course with the given Id doesn't exist");
         //return 404 if does not exist
